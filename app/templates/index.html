@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- DYNAMIC HERO BANNER CAROUSEL -->
+<div class="hero-banner-container">
+    <div id="heroSlides">
+        <!-- Rendered by main.js with Unsplash high quality botanical images -->
+    </div>
+    <button class="hero-prev" onclick="prevHeroSlide()"><i class="fas fa-chevron-left"></i></button>
+    <button class="hero-next" onclick="nextHeroSlide()"><i class="fas fa-chevron-right"></i></button>
+</div>
+
+<!-- AMAZON-STYLE OVERLAPPING 4-COLUMN CARDS -->
+<div class="hero-overlap-grid">
+    <!-- Card 1: Plants -->
+    <div class="amz-card">
+        <h3 class="card-title">Indoor Air Purifiers & Rare Aroids</h3>
+        <div class="card-quad-grid">
+            <div class="quad-item" onclick="filterByCategory('plants')">
+                <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=400&q=80" alt="Monstera" class="quad-img">
+                <div class="quad-caption">Monsteras</div>
+            </div>
+            <div class="quad-item" onclick="filterByCategory('plants')">
+                <img src="https://images.unsplash.com/photo-1598880940371-c756e015fea1?auto=format&fit=crop&w=400&q=80" alt="Snake Plant" class="quad-img">
+                <div class="quad-caption">Snake Plants</div>
+            </div>
+            <div class="quad-item" onclick="filterByCategory('plants')">
+                <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=400&q=80" alt="Fiddle Leaf" class="quad-img">
+                <div class="quad-caption">Fiddle Figs</div>
+            </div>
+            <div class="quad-item" onclick="filterByCategory('plants')">
+                <img src="https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&w=400&q=80" alt="Succulents" class="quad-img">
+                <div class="quad-caption">Succulents</div>
+            </div>
+        </div>
+        <a href="#products-section" class="card-footer-link" onclick="filterByCategory('plants')">See all live plants &rarr;</a>
+    </div>
+
+    <!-- Card 2: Seeds -->
+    <div class="amz-card">
+        <h3 class="card-title">Spring Flower & Herb Seeds</h3>
+        <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=600&q=80" alt="Seeds & Flowers" class="card-single-img">
+        <p style="font-size: 0.84rem; color: #565959; margin-bottom: 6px;">Heirloom non-GMO English wildflowers, herbs & Bonsai germination sets.</p>
+        <a href="#products-section" class="card-footer-link" onclick="filterByCategory('seeds')">Explore seed collections &rarr;</a>
+    </div>
+
+    <!-- Card 3: Flower Pots -->
+    <div class="amz-card">
+        <h3 class="card-title">Handcrafted Pots & Macrame</h3>
+        <div class="card-quad-grid">
+            <div class="quad-item" onclick="filterByCategory('pots')">
+                <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=400&q=80" alt="Sage Ceramic" class="quad-img">
+                <div class="quad-caption">Nordic Ceramic</div>
+            </div>
+            <div class="quad-item" onclick="filterByCategory('pots')">
+                <img src="https://images.unsplash.com/photo-1525498128493-380d1990a112?auto=format&fit=crop&w=400&q=80" alt="Macrame" class="quad-img">
+                <div class="quad-caption">Hanging Ropes</div>
+            </div>
+            <div class="quad-item" onclick="filterByCategory('pots')">
+                <img src="https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&w=400&q=80" alt="Terracotta" class="quad-img">
+                <div class="quad-caption">Terracotta</div>
+            </div>
+            <div class="quad-item" onclick="filterByCategory('pots')">
+                <img src="https://images.unsplash.com/photo-1584589167171-541ce45f1eea?auto=format&fit=crop&w=400&q=80" alt="Self-watering" class="quad-img">
+                <div class="quad-caption">Self-Watering</div>
+            </div>
+        </div>
+        <a href="#products-section" class="card-footer-link" onclick="filterByCategory('pots')">Shop pots & planters &rarr;</a>
+    </div>
+
+    <!-- Card 4: Living Decor & Gardening Tools -->
+    <div class="amz-card">
+        <h3 class="card-title">Living Decor & Pruning Essentials</h3>
+        <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=600&q=80" alt="Gardening Tools" class="card-single-img">
+        <p style="font-size: 0.84rem; color: #565959; margin-bottom: 6px;">Glass terrariums, living moss wall art, and precision bypass pruners.</p>
+        <a href="#products-section" class="card-footer-link" onclick="filterByCategory('tools')">Discover garden essentials &rarr;</a>
+    </div>
+</div>
+
+<!-- PAGE BODY CONTAINER -->
+<div class="page-container" id="products-section">
+
+    <!-- BOTANICAL GUARANTEE / BENEFITS STRIP -->
+    <div class="benefits-strip">
+        <div class="benefit-item">
+            <div class="benefit-icon-box"><i class="fas fa-truck-moving"></i></div>
+            <div>
+                <div class="benefit-title">Arrive-Alive Guarantee</div>
+                <div class="benefit-desc">Insulated shockproof botanical packaging</div>
+            </div>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon-box"><i class="fas fa-seedling"></i></div>
+            <div>
+                <div class="benefit-title">Non-GMO Certified Seeds</div>
+                <div class="benefit-desc">85%+ guaranteed germination batch tests</div>
+            </div>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon-box"><i class="fas fa-spa"></i></div>
+            <div>
+                <div class="benefit-title">Zero Friction Shopping</div>
+                <div class="benefit-desc">No login or password needed to order</div>
+            </div>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon-box"><i class="fas fa-leaf"></i></div>
+            <div>
+                <div class="benefit-title">Plant Care Guidance</div>
+                <div class="benefit-desc">Care specs included with every shipment</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY FILTER PILLS & SORT CONTROLS -->
+    <div class="category-filter-strip">
+        <div class="filter-pills">
+            <button class="filter-pill active" data-category="all" onclick="filterByCategory('all')">
+                <i class="fas fa-th-large"></i> All Botanical
+            </button>
+            <button class="filter-pill" data-category="plants" onclick="filterByCategory('plants')">
+                <i class="fas fa-seedling"></i> Live Plants
+            </button>
+            <button class="filter-pill" data-category="seeds" onclick="filterByCategory('seeds')">
+                <i class="fas fa-spa"></i> Seeds & Bulbs
+            </button>
+            <button class="filter-pill" data-category="pots" onclick="filterByCategory('pots')">
+                <i class="fas fa-archive"></i> Flower Pots & Planters
+            </button>
+            <button class="filter-pill" data-category="decor" onclick="filterByCategory('decor')">
+                <i class="fas fa-couch"></i> Home Decor with Plants
+            </button>
+            <button class="filter-pill" data-category="tools" onclick="filterByCategory('tools')">
+                <i class="fas fa-tools"></i> Gardening Things
+            </button>
+        </div>
+
+        <div class="filter-actions">
+            <label for="sortSelect" style="color: #565959; font-weight: 500;">Sort by:</label>
+            <select class="sort-select" id="sortSelect">
+                <option value="featured">Featured Botanical</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Avg. Customer Review</option>
+                <option value="reviews">Most Popular</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- PRODUCT CATALOG HEADER -->
+    <div class="products-section-header">
+        <h2 class="section-title">Explore Botanical Collection</h2>
+        <span class="section-results-count" id="resultsCount">Loading products...</span>
+    </div>
+
+    <!-- DYNAMIC PRODUCTS GRID (Rendered by main.js) -->
+    <div class="products-grid" id="productsGrid">
+        <!-- Rendered by client script from /api/products -->
+    </div>
+</div>
+{% endblock %}

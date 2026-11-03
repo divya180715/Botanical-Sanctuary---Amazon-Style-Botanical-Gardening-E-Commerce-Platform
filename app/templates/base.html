@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Verdant Botanics | Live Plants, Heirloom Seeds, Artisan Pots & Garden Decor{% endblock %}</title>
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Amazon-Green Theme CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+    <!-- TOP HEADER (AMAZON STYLE WITH FOREST GREEN & GOLD AESTHETICS) -->
+    <header class="amz-header">
+        <div class="amz-topbar">
+            <!-- Brand Logo -->
+            <a href="/" class="brand-link">
+                <i class="fas fa-leaf brand-icon"></i>
+                <div class="brand-name">verdant<span>botanics</span></div>
+            </a>
+
+            <!-- Deliver To Widget -->
+            <div class="delivery-nav" onclick="showToast('Eco-express delivery across all regions available!')">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>
+                    <div class="nav-line-1">Deliver to</div>
+                    <div class="nav-line-2">Your Garden</div>
+                </div>
+            </div>
+
+            <!-- Amazon-style Integrated Search Bar -->
+            <form class="amz-search-box" id="searchForm">
+                <select class="search-category-select" id="searchCategorySelect">
+                    <option value="all">All Departments</option>
+                    <option value="plants">Live Plants</option>
+                    <option value="seeds">Seeds & Bulbs</option>
+                    <option value="pots">Pots & Planters</option>
+                    <option value="decor">Home Decor with Plants</option>
+                    <option value="tools">Gardening Tools</option>
+                </select>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search indoor plants, rare seeds, ceramic pots, living decor..." autocomplete="off">
+                <button type="submit" class="search-submit-btn" title="Search Botanical Catalog">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+
+            <!-- Right Nav Actions (No Auth Required) -->
+            <div class="header-actions">
+                <div class="nav-item" onclick="filterByCategory('all')">
+                    <span class="nav-line-1">Fresh Stock</span>
+                    <span class="nav-line-2">Browse All</span>
+                </div>
+
+                <div class="nav-item" onclick="openCartDrawer()">
+                    <span class="nav-line-1">Returns &</span>
+                    <span class="nav-line-2">Orders</span>
+                </div>
+
+                <!-- Shopping Cart Icon with Live Count -->
+                <div class="nav-item cart-nav-item" onclick="openCartDrawer()" title="View Your Cart">
+                    <div class="cart-icon-wrapper">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </div>
+                    <span class="nav-line-2" style="margin-left: 2px;">Cart</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sub-Navigation Bar Ribbon -->
+        <div class="amz-subnav">
+            <button class="all-menu-btn" onclick="resetFilters()">
+                <i class="fas fa-bars"></i> All Categories
+            </button>
+            <div class="subnav-links">
+                <a href="#products-section" class="subnav-link" onclick="filterByCategory('plants')">Live Plants</a>
+                <a href="#products-section" class="subnav-link" onclick="filterByCategory('seeds')">Flower & Herb Seeds</a>
+                <a href="#products-section" class="subnav-link" onclick="filterByCategory('pots')">Artisan Pots</a>
+                <a href="#products-section" class="subnav-link" onclick="filterByCategory('decor')">Plant Home Decor</a>
+                <a href="#products-section" class="subnav-link" onclick="filterByCategory('tools')">Gardening Supplies</a>
+                <a href="#products-section" class="subnav-link badge-link" onclick="filterByCategory('all')"><i class="fas fa-bolt"></i> Today's Deals</a>
+            </div>
+            <div class="subnav-promo">
+                <i class="fas fa-shield-alt"></i> 100% Arrive-Alive Plant Guarantee
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN BODY CONTENT -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- QUICK-VIEW PRODUCT MODAL -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-box">
+            <button class="modal-close-btn" onclick="closeModal()">&times;</button>
+            <div id="modalContent" style="display: contents;"></div>
+        </div>
+    </div>
+
+    <!-- SHOPPING CART SLIDE-IN DRAWER -->
+    <div class="cart-drawer-overlay" id="cartDrawerOverlay" onclick="closeCartDrawer()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-drawer-header">
+            <h3><i class="fas fa-shopping-bag"></i> Your Botanical Cart</h3>
+            <button class="close-cart-btn" onclick="closeCartDrawer()">&times;</button>
+        </div>
+        <div class="cart-drawer-body" id="cartItemsList">
+            <!-- Rendered by JS -->
+        </div>
+        <div class="cart-drawer-footer">
+            <div class="cart-subtotal-row">
+                <span>Subtotal:</span>
+                <span id="cartSubtotalAmount" style="color: #b12704;">₹0</span>
+            </div>
+            <button class="btn-proceed-checkout" onclick="openCheckoutModal()">
+                Proceed to Checkout (No Account Needed)
+            </button>
+        </div>
+    </div>
+
+    <!-- DIRECT CHECKOUT MODAL (NO AUTHENTICATION REQUIRED) -->
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="checkout-modal-box">
+            <button class="modal-close-btn" onclick="closeCheckoutModal()">&times;</button>
+            <div id="checkoutModalBody">
+                <div class="checkout-step-title">
+                    <i class="fas fa-shield-alt" style="color: #2e7d32;"></i>
+                    <span>Fast Guest Checkout</span>
+                </div>
+                <p style="font-size: 0.85rem; color: #555; margin-bottom: 16px;">
+                    No passwords or registration needed. Enter your shipping details to receive your botanical order.
+                </p>
+
+                <div id="checkoutOrderSummary"></div>
+
+                <form onsubmit="handleCheckoutSubmit(event)">
+                    <div class="form-group">
+                        <label for="shipName">Full Name *</label>
+                        <input type="text" id="shipName" placeholder="e.g. John Evergreen" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shipAddress">Street Address / Flat / Building *</label>
+                        <input type="text" id="shipAddress" placeholder="e.g. 42/1, Green Avenue, Katpadi" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="shipCity">City / Town *</label>
+                            <input type="text" id="shipCity" placeholder="e.g. Vellore" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="shipState">State / UT *</label>
+                            <select id="shipState" required style="width: 100%; padding: 10px 12px; border: 1px solid #d5d9d9; border-radius: 6px; font-size: 0.95rem; background: #fff; color: #0f1111; outline: none;">
+                                <option value="" disabled selected>Select State / UT</option>
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                <option value="Jharkhand">Jharkhand</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Manipur">Manipur</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Mizoram">Mizoram</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Odisha">Odisha</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Sikkim">Sikkim</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="Tripura">Tripura</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="West Bengal">West Bengal</option>
+                                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                <option value="Chandigarh">Chandigarh</option>
+                                <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra & Nagar Haveli & Daman & Diu</option>
+                                <option value="Delhi (NCT)">Delhi (NCT)</option>
+                                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                <option value="Ladakh">Ladakh</option>
+                                <option value="Lakshadweep">Lakshadweep</option>
+                                <option value="Puducherry">Puducherry</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="shipPostal">PIN / Postal Code *</label>
+                            <input type="text" id="shipPostal" placeholder="e.g. 632014" pattern="[0-9]{6}" title="6-digit Indian PIN code" maxlength="6" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="shipPhone">Phone Number (For Delivery Updates) *</label>
+                            <input type="tel" id="shipPhone" placeholder="e.g. 9876543210" pattern="[0-9]{10}" title="10-digit Indian Mobile Number" maxlength="10" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Payment Method</label>
+                        <div style="background: #f1f8f4; border: 1px solid #c8e6c9; border-radius: 6px; padding: 10px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-truck-loading" style="color: #2e7d32; font-size: 1.1rem;"></i>
+                            <span>Cash on Delivery / Direct Botanical Card upon Arrival</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="placeOrderBtn" class="btn-proceed-checkout" style="margin-top: 10px;">
+                        Place Your Botanical Order
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- FOOTER (AMAZON STYLE) -->
+    <footer>
+        <div class="amz-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            Back to top
+        </div>
+        <div class="amz-footer-main">
+            <div class="footer-columns-wrap">
+                <div class="footer-col">
+                    <h4>Get to Know Us</h4>
+                    <ul>
+                        <li><a href="#" onclick="return false;">About Verdant Botanics</a></li>
+                        <li><a href="#" onclick="return false;">Sustainable Packaging</a></li>
+                        <li><a href="#" onclick="return false;">Our Certified Nurseries</a></li>
+                        <li><a href="#" onclick="return false;">Plant Care Science</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Shop Categories</h4>
+                    <ul>
+                        <li><a href="#products-section" onclick="filterByCategory('plants')">Live Air-Purifying Plants</a></li>
+                        <li><a href="#products-section" onclick="filterByCategory('seeds')">Non-GMO Heirloom Seeds</a></li>
+                        <li><a href="#products-section" onclick="filterByCategory('pots')">Handcrafted Pots & Saucers</a></li>
+                        <li><a href="#products-section" onclick="filterByCategory('decor')">Terrariums & Living Walls</a></li>
+                        <li><a href="#products-section" onclick="filterByCategory('tools')">Gardening Shears & Soil Probes</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Care</h4>
+                    <ul>
+                        <li><a href="#" onclick="return false;">30-Day Healthy Plant Guarantee</a></li>
+                        <li><a href="#" onclick="return false;">Track Your Shipment</a></li>
+                        <li><a href="#" onclick="return false;">Winter Weather Shipping Heat Packs</a></li>
+                        <li><a href="#" onclick="return false;">Horticulturist Assistance</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Verdant Promise</h4>
+                    <p style="font-size: 0.82rem; line-height: 1.6; color: #a7f3d0;">
+                        Every plant is hand-selected, hydrated before shipping, and packed inside 100% biodegradable shockproof boxing.
+                    </p>
+                    <div style="margin-top: 12px; display: flex; gap: 12px; font-size: 1.2rem; color: #4ade80;">
+                        <i class="fab fa-instagram"></i>
+                        <i class="fab fa-pinterest"></i>
+                        <i class="fab fa-youtube"></i>
+                        <i class="fab fa-facebook"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom-bar">
+            <p>&copy; 2026 Verdant Botanics, Inc. Built with HTML, CSS, JavaScript & Python. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Frontend Application Controller -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
